@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://api.map.baidu.com/api?v=1.4"></script>
+
+		<style type="text/css">
+			.box{
+				width:300px;
+				height:300px;
+				border:1px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="button" name="btn" id="btn" value="获取位置" />
+		<div class="box" id="box"></div>
+		
+		<script type="text/javascript">
+			
+			var btn = document.getElementById('btn');
+			var box = document.getElementById('box');
+			
+			btn.onclick = function(){
+				navigator.geolocation.getCurrentPosition(function(position){
+					var y = position.coords.longitude;
+					var x = position.coords.latitude;
+					
+					
+					
+					var map = new BMap.Map("box");           // 创建Map实例
+					var op = new BMap.Point(y, x);
+					
+					map.centerAndZoom(op, 44);               // 初始化地图,设置中心点坐标和地图级别
+					
+					
+					map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+					
+					map.setCurrentCity("广州");          			// 设置地图显示的城市 此项是必须设置的
+					map.enableScrollWheelZoom(true);             //开启鼠标滚轮缩放
+
+					
+					
+					
+//					var point = new BMap.Point(116.400244,39.92556);
+//					map.centerAndZoom(point, 12);
+					var marker = new BMap.Marker(op);  // 创建标注
+					map.addOverlay(marker);              // 将标注添加到地图中
+				
+					var label = new BMap.Label("我们这里一群帅哥",{offset:new BMap.Size(20,-10)});
+					
+					marker.setLabel(label);
+					
+					
+					
+//					var map = new BMap.Map("allmap");
+//					var point = new BMap.Point(116.417854,39.921988);
+//					var marker = new BMap.Marker(op-);  // 创建标注
+//					map.addOverlay(marker);              // 将标注添加到地图中
+//					map.centerAndZoom(op, 15);
+					var opts = {
+					  width : 200,            // 信息窗口宽度
+					  height: 100,           // 信息窗口高度
+					  title : "我们都单身"    // 信息窗口标题
+					  
+					}
+					var infoWindow = new BMap.InfoWindow("三新大厦", opts);  // 创建信息窗口对象
+					
+					marker.addEventListener("click", function(){          
+						map.openInfoWindow(infoWindow,op); //开启信息窗口
+					});
+					
+				
+//					var map = new BMap.Map("allmap");
+//					var point = new BMap.Point(116.404, 39.915);
+//					map.centerAndZoom(point, 15);
+					
+					//创建小狐狸
+//					var pt = new BMap.Point(116.417, 39.909);
+					var myIcon = new BMap.Icon("img/Icon_animal_1_015.ICO", new BMap.Size(0,0));
+					var marker2 = new BMap.Marker(op,{icon:myIcon});  // 创建标注
+					map.addOverlay(marker2);              // 将标注添加到地图中
+	
+				},function(position){},{})
+			}
+		</script>
+	</body>
+</html>
